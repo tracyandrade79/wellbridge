@@ -1,149 +1,363 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Wellbridge - Premium AI Agency delivering AI Systems, Full Stack Applications, AI Chatbots, Voice Assistants, Workflow Automations, and AI Consulting.">
-  <title>Wellbridge | AI Solutions for the Future</title>
+"use client";
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+import { useEffect, useRef, useState } from "react";
 
-  <!-- Styles -->
-  <style>
-    :root {
-      --primary-color: #FF4B5C;
-      --accent-color: #56C596;
-      --neutral-light: #F9FAFB;
-      --neutral-dark: #1C1C1E;
-      --highlight-color: #FFD166;
-      --font-sans: 'Inter', sans-serif;
+// Minimal styles injected at runtime for a clean copy-paste experience.
+// For production, move these into app/globals.css and use a proper design system.
+const InjectStyles = () => {
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = `
+      :root { color-scheme: dark; }
+      html, body { margin:0; padding:0; background:#0B0F14; color:#E6E9EF; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+      .header { position: sticky; top:0; z-index: 30; backdrop-filter: blur(10px); background: rgba(0,0,0,0.4); border-bottom: 1px solid #1F2937; }
+      .nav { height:64px; display:flex; align-items:center; justify-content:space-between; }
+      .brand { display:flex; align-items:center; gap:12px; font-weight:600; }
+      .brand-logo { width:32px; height:32px; border-radius:8px; background: linear-gradient(135deg, #7C3AED, #2563EB); box-shadow: 0 0 28px rgba(124,58,237,0.35); }
+      .navlinks { display:flex; gap:28px; align-items:center; }
+      .navlinks a { color:#98A2B3; }
+      .navlinks a:hover { color:#fff; }
+      .cta { background:#7C3AED; padding:10px 16px; border-radius:8px; font-weight:600; box-shadow:0 0 30px rgba(124,58,237,0.35); }
+      .menu-btn { display:none; }
+      @media (max-width: 900px) {
+        .navlinks { display:none; }
+        .menu-btn { display:block; background:transparent; color:#E6E9EF; border:1px solid #1F2937; padding:8px 10px; border-radius:8px; }
+        .mobile { border-top:1px solid #1F2937; background: rgba(0,0,0,0.7); }
+        .mobile a { display:block; padding:14px 0; color:#98A2B3; }
+        .mobile a:hover { color:#fff; }
+        .mobile .cta { display:inline-block; margin:10px 0; }
+      }
+
+      .hero { padding: 90px 0 40px; position:relative; overflow:hidden; }
+      .bg-waves::before {
+        content:""; position:absolute; inset:0; pointer-events:none; 
+        background:
+          radial-gradient(800px 300px at 10% -10%, rgba(124,58,237,0.35), transparent 45%),
+          radial-gradient(800px 300px at 90% 110%, rgba(37,99,235,0.25), transparent 45%);
+        opacity:0.8;
+      }
+      .hero-grid { display:grid; gap:40px; grid-template-columns: 1.2fr 1fr; align-items:center; }
+      @media (max-width: 1000px) { .hero-grid { grid-template-columns: 1fr; } }
+      .h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.05; font-weight:800; }
+      .gradient { background: linear-gradient(90deg, #7C3AED 0%, #2563EB 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+      .muted { color:#98A2B3; }
+      .btns { display:flex; gap:14px; margin-top:22px; flex-wrap:wrap; }
+      .btn-primary { background:#7C3AED; padding:12px 18px; border-radius:10px; font-weight:600; box-shadow:0 0 30px rgba(124,58,237,0.35); }
+      .btn-ghost { border:1px solid #1F2937; padding:12px 18px; border-radius:10px; font-weight:600; color:#E6E9EF; }
+      .card { border:1px solid #1F2937; background:rgba(15,20,26,0.5); border-radius:16px; }
+
+      .section { padding: 70px 0; }
+      .section h2 { font-size: clamp(26px, 3.5vw, 38px); font-weight:700; margin:0; }
+      .section p.lead { margin-top:10px; color:#98A2B3; max-width: 720px; }
+
+      .grid-3 { display:grid; gap:18px; grid-template-columns: repeat(3, 1fr); }
+      .grid-2 { display:grid; gap:18px; grid-template-columns: repeat(2, 1fr); }
+      @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; } }
+      .tile { padding:20px; transition: border-color .2s, box-shadow .2s; }
+      .tile:hover { border-color: rgba(124,58,237,0.4); box-shadow:0 0 30px rgba(124,58,237,0.25); }
+      .tile h3 { margin:8px 0 0; font-size:20px; }
+      .tile p { margin:10px 0 0; color:#98A2B3; }
+      .tile a { display:inline-block; margin-top:12px; color:#7C3AED; }
+
+      .case { overflow:hidden; }
+      .case-grid { display:grid; grid-template-columns: 1fr 1fr; }
+      @media (max-width: 900px) { .case-grid { grid-template-columns: 1fr; } }
+      .case-img { aspect-ratio: 16/9; background: #0F141A; }
+      .case-body { padding:24px; }
+      .case-ctrls { display:flex; gap:10px; }
+      .icon-btn { border:1px solid #1F2937; padding:10px 12px; border-radius:10px; background:transparent; color:#E6E9EF; }
+
+      .partners { display:grid; gap:16px; grid-template-columns: repeat(4, 1fr); }
+      @media (max-width: 900px) { .partners { grid-template-columns: repeat(2, 1fr); } }
+      .partner { display:flex; align-items:center; justify-content:center; padding:24px; }
+
+      .blog a { padding:20px; }
+
+      .contact-grid { display:grid; gap:24px; grid-template-columns: 1fr 1.2fr; }
+      @media (max-width: 1000px) { .contact-grid { grid-template-columns: 1fr; } }
+      .calendar { min-height: 660px; padding: 8px; }
+
+      .footer { border-top:1px solid #1F2937; }
+      .footer-top { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding: 28px 0 10px; }
+      .footer-links { display:flex; gap:22px; flex-wrap:wrap; }
+      .footer-bottom { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; color:#98A2B3; font-size:14px; padding: 10px 0 28px; }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+  return null;
+};
+
+export default function Page() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Simple case studies slider
+  const cases = [
+    {
+      title: "Retail Automation",
+      impact: "38% avg. handle-time reduction",
+      metric: "3.2x ROI in 6 months",
+      imgAlt: "Retail case placeholder",
+    },
+    {
+      title: "Fintech Risk Agent",
+      impact: "Automated 72% triage decisions",
+      metric: "Cut review time by 61%",
+      imgAlt: "Fintech case placeholder",
+    },
+    {
+      title: "Healthcare Assistant",
+      impact: "24/7 patient support",
+      metric: "NPS +22, CSAT +18%",
+      imgAlt: "Healthcare case placeholder",
+    },
+  ];
+  const [idx, setIdx] = useState(0);
+
+  // Cal.com inline embed
+  const calRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    // avoid duplicate script
+    const existing = document.querySelector('script[data-cal-script="true"]') as HTMLScriptElement | null;
+    const load = () => {
+      // @ts-ignore
+      if (typeof Cal !== "undefined" && calRef.current) {
+        // @ts-ignore
+        Cal("inline", {
+          elementOrSelector: calRef.current,
+          calLink: "tracyandrade/discovery-call-hackathon-4",
+        });
+        // @ts-ignore
+        Cal("ui", {
+          styles: { body: { background: "transparent" } },
+        });
+        // @ts-ignore
+        Cal("preload", { calLink: "tracyandrade/discovery-call-hackathon-4" });
+      }
+    };
+    if (!existing) {
+      const s = document.createElement("script");
+      s.src = "https://cal.com/embed.js";
+      s.async = true;
+      s.defer = true;
+      s.setAttribute("data-cal-script", "true");
+      s.onload = load;
+      document.body.appendChild(s);
+    } else {
+      load();
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: var(--font-sans); line-height:1.6; color: var(--neutral-dark); background: var(--neutral-light); scroll-behavior:smooth; }
-    a { text-decoration:none; color: inherit; }
-    img { max-width:100%; display:block; }
+  }, []);
 
-    /* Header */
-    header { position: fixed; width:100%; top:0; left:0; background:#fff; z-index:1000; box-shadow:0 2px 15px rgba(0,0,0,0.1); }
-    .nav-container { max-width:1200px; margin:auto; display:flex; justify-content:space-between; align-items:center; padding:1rem; }
-    nav ul { display:flex; list-style:none; gap:2rem; }
-    nav ul li a { font-weight:600; transition:0.3s; }
-    nav ul li a:hover { color: var(--primary-color); }
+  return (
+    <>
+      <InjectStyles />
 
-    /* Hero Section */
-    .hero { display:flex; align-items:center; justify-content:center; text-align:center; height:100vh; background:linear-gradient(135deg, var(--primary-color), var(--accent-color)); color:#fff; padding:0 1rem; position:relative; overflow:hidden; }
-    .hero h1 { font-size:3rem; margin-bottom:1rem; animation:fadeInUp 1s ease forwards; opacity:0; }
-    .hero p { font-size:1.2rem; margin-bottom:2rem; animation:fadeInUp 1.5s ease forwards; opacity:0; }
-    .hero .cta { background: var(--highlight-color); color:#000; padding:0.75rem 1.5rem; border-radius:50px; font-weight:700; transition:0.3s; animation:fadeInUp 2s ease forwards; opacity:0; }
-    .hero .cta:hover { transform: scale(1.1); box-shadow:0 8px 20px rgba(0,0,0,0.3); }
+      {/* Header */}
+      <header className="header">
+        <div className="wrap nav">
+          <div className="brand">
+            <div className="brand-logo" />
+            <span>wellbridge</span>
+          </div>
+          <nav className="navlinks" aria-label="Main">
+            <a href="#solutions">Solutions</a>
+            <a href="#services">Services</a>
+            <a href="#about">About</a>
+            <a href="#case-studies">Case Studies</a>
+            <a href="#blog">Blog</a>
+            <a href="#contact" className="cta">Get a Consultation</a>
+          </nav>
+          <button className="menu-btn" onClick={() => setMenuOpen((s) => !s)} aria-expanded={menuOpen} aria-controls="mobile-menu">
+            {menuOpen ? "Close" : "Menu"}
+          </button>
+        </div>
+        {menuOpen && (
+          <div id="mobile-menu" className="mobile">
+            <div className="wrap" style={{ padding: "14px 0 18px" }}>
+              <a href="#solutions" onClick={() => setMenuOpen(false)}>Solutions</a>
+              <a href="#services" onClick={() => setMenuOpen(false)}>Services</a>
+              <a href="#about" onClick={() => setMenuOpen(false)}>About</a>
+              <a href="#case-studies" onClick={() => setMenuOpen(false)}>Case Studies</a>
+              <a href="#blog" onClick={() => setMenuOpen(false)}>Blog</a>
+              <a href="#contact" className="cta" onClick={() => setMenuOpen(false)}>Get a Consultation</a>
+            </div>
+          </div>
+        )}
+      </header>
 
-    @keyframes fadeInUp {
-      0% { opacity:0; transform: translateY(30px); }
-      100% { opacity:1; transform: translateY(0); }
-    }
+      {/* Hero */}
+      <section className="hero bg-waves" aria-labelledby="hero-heading">
+        <div className="wrap hero-grid">
+          <div>
+            <h1 id="hero-heading" className="h1">
+              Transform Your Business with <span className="gradient">Intelligent AI Solutions</span>
+            </h1>
+            <p className="muted" style={{ marginTop: 16, maxWidth: 680, fontSize: 18 }}>
+              We build next-gen AI systems, full-stack apps, and intelligent assistants that drive growth.
+            </p>
+            <div className="btns">
+              <a href="#contact" className="btn-primary">Book a Call</a>
+              <a href="#solutions" className="btn-ghost">Explore Solutions</a>
+            </div>
+          </div>
+          <div className="card" style={{ height: 380, padding: 16 }}>
+            {/* Placeholder for animation/3D - replace with your canvas/Lottie as needed */}
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: 12,
+                background:
+                  "radial-gradient(120px 80px at 20% 20%, rgba(124,58,237,0.35), transparent 60%), radial-gradient(140px 100px at 80% 80%, rgba(37,99,235,0.30), transparent 60%), #0F141A",
+              }}
+              aria-label="Futuristic AI visual"
+            />
+          </div>
+        </div>
+      </section>
 
-    /* Sections */
-    section { padding:6rem 1rem; max-width:1200px; margin:auto; }
-    h2 { font-size:2.2rem; margin-bottom:2.5rem; text-align:center; color: var(--primary-color); }
+      {/* Solutions & Services */}
+      <section id="solutions" className="section">
+        <div className="wrap">
+          <h2>Solutions & Services</h2>
+          <p className="lead">Premium engineering and design for intelligent products and platforms.</p>
 
-    /* Services */
-    .services { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:2rem; }
-    .service-card { background:#fff; padding:2rem; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,0.15); transition:0.6s; text-align:center; transform: translateY(30px); opacity:0; animation:fadeInUp 1s forwards; }
-    .service-card:nth-child(1) { animation-delay:0.3s; }
-    .service-card:nth-child(2) { animation-delay:0.6s; }
-    .service-card:nth-child(3) { animation-delay:0.9s; }
-    .service-card:nth-child(4) { animation-delay:1.2s; }
-    .service-card:nth-child(5) { animation-delay:1.5s; }
-    .service-card:nth-child(6) { animation-delay:1.8s; }
-    .service-card:hover { transform: translateY(-10px) scale(1.08); box-shadow:0 12px 30px rgba(0,0,0,0.25); }
-    .service-card h3 { margin-bottom:1rem; color: var(--accent-color); }
+          <div className="grid-3" style={{ marginTop: 18 }}>
+            {[
+              { title: "AI Systems", desc: "Custom models, agents, and data pipelines engineered for outcomes." },
+              { title: "Full Stack Applications", desc: "Robust, scalable apps with modern DX and exceptional UX." },
+              { title: "AI Chatbots", desc: "On-brand assistants that resolve tasks and boost CSAT." },
+              { title: "Voice Assistants", desc: "Natural, multimodal assistants for calls and workflows." },
+              { title: "Workflow Automations", desc: "Orchestrations connecting tools and teams for speed." },
+              { title: "AI Consulting", desc: "Roadmaps, proofs, and governance for AI at scale." },
+            ].map((s) => (
+              <div key={s.title} className="tile card">
+                <h3>{s.title}</h3>
+                <p>{s.desc}</p>
+                <a href="#contact">Get a consultation →</a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-    /* About */
-    .team { display:flex; flex-wrap:wrap; gap:2rem; justify-content:center; }
-    .team-member { background:#fff; padding:2rem; border-radius:16px; text-align:center; flex:1 1 220px; box-shadow:0 6px 20px rgba(0,0,0,0.15); transition:0.6s; }
-    .team-member:hover { transform: scale(1.1); box-shadow:0 12px 30px rgba(0,0,0,0.25); }
-    .team-member img { border-radius:50%; width:130px; margin-bottom:1rem; }
+      {/* Case Studies */}
+      <section id="case-studies" className="section">
+        <div className="wrap">
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 12 }}>
+            <div>
+              <h2>Case Studies</h2>
+              <p className="lead">Real outcomes, measurable value.</p>
+            </div>
+            <div className="case-ctrls">
+              <button className="icon-btn" onClick={() => setIdx((i) => (i - 1 + cases.length) % cases.length)} aria-label="Previous">‹</button>
+              <button className="icon-btn" onClick={() => setIdx((i) => (i + 1) % cases.length)} aria-label="Next">›</button>
+            </div>
+          </div>
 
-    /* Portfolio */
-    .portfolio { display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:2rem; }
-    .portfolio-item { position:relative; overflow:hidden; border-radius:16px; }
-    .portfolio-item img { transition: transform 0.6s ease; }
-    .portfolio-item:hover img { transform: scale(1.2) rotate(2deg); }
-    .portfolio-item .overlay { position:absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.65); color:#fff; display:flex; align-items:center; justify-content:center; opacity:0; transition:0.6s; text-align:center; padding:1rem; font-size:1.1rem; }
-    .portfolio-item:hover .overlay { opacity:1; }
+          <div className="card case" style={{ marginTop: 18 }}>
+            <div className="case-grid">
+              <div className="case-img" role="img" aria-label={cases[idx].imgAlt} />
+              <div className="case-body">
+                <h3 style={{ margin: 0, fontSize: 24, fontWeight: 700 }}>{cases[idx].title}</h3>
+                <p className="muted" style={{ marginTop: 8 }}>{cases[idx].impact}</p>
+                <p className="muted" style={{ marginTop: 4 }}>{cases[idx].metric}</p>
+                <a href="#contact" style={{ display: "inline-block", marginTop: 16, color: "#7C3AED" }}>Discuss similar results →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    /* Contact */
-    .contact-container { display:flex; flex-direction:column; align-items:center; gap:2rem; }
-    iframe { border:none; width:100%; max-width:650px; height:750px; border-radius:16px; box-shadow:0 6px 25px rgba(0,0,0,0.2); }
+      {/* About */}
+      <section id="about" className="section">
+        <div className="wrap">
+          <h2>About Wellbridge</h2>
+          <p className="lead">
+            Our mission is to bridge strategy and execution with intelligent systems that elevate products, teams, and customer experiences.
+          </p>
 
-    <section id="contact">
-  <h2>Schedule a Discovery Call</h2>
-  <div class="contact-container">
-    <a href="https://cal.com/tracyandrade/discovery-call-hackathon-4" target="_blank" class="cta">Book a Discovery Call</a>
-  </div>
-</section>
+          <div className="partners" style={{ marginTop: 18 }}>
+            {["DeepSignal", "CloudForge", "VectorLab", "DataNest"].map((name) => (
+              <div key={name} className="card partner" aria-label={`${name} logo`}>
+                <span className="muted">{name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
+      {/* Blog / Insights */}
+      <section id="blog" className="section">
+        <div className="wrap">
+          <h2>Insights</h2>
+          <p className="lead">Thought leadership on AI, automation, and the future of product experiences.</p>
 
-    /* Footer */
-    footer { text-align:center; padding:3rem 1rem; background:#1C1C1E; color:#fff; margin-top:2rem; font-size:0.95rem; }
+          <div className="grid-3 blog" style={{ marginTop: 18 }}>
+            {[
+              { title: "Designing Production-Ready AI Agents", excerpt: "From tool use to guardrails—ship agents with reliability.", href: "/blog/ai-agents" },
+              { title: "Automating the Last Mile", excerpt: "Where workflow orchestration unlocks compounding value.", href: "/blog/automation" },
+              { title: "Voice UX for Assistants", excerpt: "Designing multimodal experiences that feel effortless.", href: "/blog/voice-ux" },
+            ].map((p) => (
+              <a key={p.title} href={p.href} className="card tile">
+                <h3>{p.title}</h3>
+                <p className="muted">{p.excerpt}</p>
+                <span style={{ color: "#7C3AED", marginTop: 12, display: "inline-block" }}>Read more →</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
 
-    @media(max-width:768px){
-      .hero h1 { font-size:2.4rem; }
-      .hero p { font-size:1.1rem; }
-      nav ul { flex-direction:column; gap:1rem; }
-    }
-  </style>
-</head>
-<body>
+      {/* Contact / Lead Gen with Cal.com inline embed */}
+      <section id="contact" className="section">
+        <div className="wrap">
+          <div className="contact-grid">
+            <div>
+              <h2>Book a Consultation</h2>
+              <p className="lead">
+                Share goals and timelines—our team will tailor a roadmap for measurable impact.
+              </p>
+              <ul className="muted" style={{ marginTop: 14, listStyle: "none", padding: 0 }}>
+                <li>Email: hello@wellbridge.ai</li>
+                <li>Phone: +1 (555) 201-2040</li>
+                <li>Social: @wellbridge_ai</li>
+              </ul>
+            </div>
+            <div className="card calendar" ref={calRef} aria-label="Scheduling calendar" />
+          </div>
+        </div>
+      </section>
 
-  <!-- Header -->
-  <header>
-    <div class="nav-container">
-      <div class="logo"><h2>Wellbridge</h2></div>
-      <nav>
-        <ul>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <div>
-      <h1>AI Solutions for a Smarter Future</h1>
-      <p>Full Stack AI Systems, Chatbots, Voice Assistants, Workflow Automations, and Expert Consulting.</p>
-      <a href="#contact" class="cta">Get Started</a>
-    </div>
-  </section>
-
-  <!-- Services Section -->
-  <section id="services">
-    <h2>Our Services</h2>
-    <div class="services">
-      <div class="service-card">
-        <h3>AI Systems</h3>
-        <p>End-to-end AI system development for scalable enterprise solutions.</p>
-      </div>
-      <div class="service-card">
-        <h3>Full Stack Applications</h3>
-        <p>Custom web and mobile apps integrated with AI-driven intelligence.</p>
-      </div>
-      <div class="service-card">
-        <h3>AI Chatbots</h3>
-        <p>Conversational AI solutions for customer engagement and support.</p>
-      </div>
-      <div class="service-card">
-        <h3>Voice Assistants</h3>
-        <p>Smart voice-enabled assistants for enhanced interaction.</p>
-      </div>
-      <div class="service-card">
-        <h3>Workflow Automation</h3>
-        <p>Optimize operations and productivity through AI-powered automation.</p>
-      </div>
-      <div class="service-card">
-        <h3>AI Consulting</h3>
+      {/* Footer */}
+      <footer className="footer">
+        <div className="wrap">
+          <div className="footer-top">
+            <div className="brand">
+              <div className="brand-logo" />
+              <span>wellbridge</span>
+            </div>
+            <div className="footer-links">
+              <a href="#solutions">Solutions</a>
+              <a href="#case-studies">Case Studies</a>
+              <a href="#blog">Blog</a>
+              <a href="#contact">Contact</a>
+            </div>
+          </div>
+          <div className="footer-bottom">
+            <p>© {new Date().getFullYear()} Wellbridge. All rights reserved.</p>
+            <div className="footer-links">
+              <a href="/privacy">Privacy</a>
+              <a href="/terms">Terms</a>
+              <a href="/sitemap.xml">Sitemap</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </>
+  );
+}
